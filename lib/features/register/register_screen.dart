@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game/features/login/login_screen.dart';
-
-import '../forgotpassword/reste_verifivation_screen.dart';
-import '../register/register_screen.dart';
+import 'package:game/features/register/register_success.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -24,7 +22,8 @@ class _RegisterState extends State<Register> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
@@ -53,18 +52,19 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
-              
+
               // register fields care
               SizedBox(
                 width: width * 1,
-                height: height * 1,
+                height: height * 0.9,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.only(top:20, bottom: 30),
+                        padding: EdgeInsets.only(bottom: 30),
                         child: Text(
                           'Create new account',
                           style: TextStyle(
@@ -80,8 +80,7 @@ class _RegisterState extends State<Register> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                            padding: EdgeInsets.all(15),
                             child: TextField(
                               decoration: InputDecoration(
                                 hintText: 'Email',
@@ -89,8 +88,18 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
+                          const Padding(
+                            padding: EdgeInsets.all(10),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Username',
+                                prefixIcon: Icon(Icons.person),
+                              ),
+                            ),
+                          ),
                           Padding(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
                             child: TextField(
                               obscureText: passenable,
                               decoration: InputDecoration(
@@ -99,8 +108,7 @@ class _RegisterState extends State<Register> {
                                 suffix: IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      passenable =
-                                          !passenable; 
+                                      passenable = !passenable;
                                     });
                                   },
                                   icon: Icon(
@@ -118,7 +126,7 @@ class _RegisterState extends State<Register> {
                       // login button
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 20, left: 10, right: 10, bottom: 20),
+                            top: 30, bottom: 50, left: 10, right: 10),
                         child: SizedBox(
                           width: width * 1,
                           child: ElevatedButton(
@@ -126,7 +134,7 @@ class _RegisterState extends State<Register> {
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const Login()),
+                                    builder: (context) => const RegisterSuccess()),
                                 (Route<dynamic> route) => false,
                               )
                             },
@@ -136,7 +144,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                             child: const Padding(
-                              padding: EdgeInsets.all(10),
+                              padding: EdgeInsets.all(15),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,154 +169,58 @@ class _RegisterState extends State<Register> {
                       ), //SizedBox
 
                       // forgot password
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 5),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Verification(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 107, 107, 107),
-                              fontWeight: FontWeight.w500,
-                            ), //Textstyle
-                          ),
+
+                      const Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: Text(
+                          'By registering, you confirm that your account accept our tesm of Use and Privacy pliocy.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 107, 107, 107),
+                            fontWeight: FontWeight.w500,
+                          ), //Textstyle
                         ),
                       ),
+
                       const Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'New to Logistics?',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 107, 107, 107),
-                              fontWeight: FontWeight.w500,
-                            ), //Textstyle
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Register()),
-                              );
-                            },
-                            child: const Text(
-                              'Register',
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Already have an Account?',
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Color.fromARGB(255, 45, 154, 255),
+                                color: Color.fromARGB(255, 107, 107, 107),
                                 fontWeight: FontWeight.w500,
                               ), //Textstyle
                             ),
-                          ),
-                        ],
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Login()),
+                                );
+                              },
+                              child: const Text(
+                                'Login',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color.fromARGB(255, 45, 154, 255),
+                                  fontWeight: FontWeight.w500,
+                                ), //Textstyle
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ), //Column
                 ), //Padding
               ), //Card
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Register()),
-                                (Route<dynamic> route) => false,
-                              )
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 45, 62, 255),
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.facebook,
-                                    color: Color.fromARGB(255, 255, 255, 255),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 2),
-                                    child: Text(
-                                      'Facebook',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Register()),
-                                (Route<dynamic> route) => false,
-                              )
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 8, 8, 8),
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.tiktok,
-                                    color: Color.fromARGB(255, 255, 255, 255),
-                                  ),
-                                  Text(
-                                    'Tik Tok',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ),

@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
                     color: const Color.fromARGB(255, 255, 255, 255),
                     child: SizedBox(
                       width: width * 0.9,
-                      height: height * 0.66,
+                      height: height * 0.67,
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: Column(
@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
                               children: <Widget>[
                                 const Padding(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
+                                      horizontal: 10, vertical: 10),
                                   child: TextField(
                                     decoration: InputDecoration(
                                       hintText: 'Email',
