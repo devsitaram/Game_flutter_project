@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:game/features/login/login_screen.dart';
 import 'package:game/features/register/register_success.dart';
 
@@ -10,7 +14,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-
   final registerFormKey = GlobalKey<FormState>();
   final myEmailController = TextEditingController();
   final myUsernameController = TextEditingController();
@@ -18,6 +21,25 @@ class _RegisterState extends State<Register> {
 
   bool passenable = true;
   bool checkValue = false;
+
+  // user data are stire in secure store
+  void _registerAndNavigate() async {
+    if (registerFormKey.currentState!.validate()) {
+      // Write data to FlutterSecureStorage
+      const secureStorage = FlutterSecureStorage();
+      await secureStorage.write(key: "email", value: myEmailController.text);
+      await secureStorage.write(
+          key: "username", value: myUsernameController.text);
+      await secureStorage.write(
+          key: "password", value: myPasswordController.text);
+      // Navigate to the success screen
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const RegisterSuccess()),
+        (Route<dynamic> route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,19 +179,7 @@ class _RegisterState extends State<Register> {
                           child: SizedBox(
                             width: width * 1,
                             child: ElevatedButton(
-                              onPressed: () => {
-                                if (registerFormKey.currentState!.validate())
-                                  {
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RegisterSuccess()),
-                                      (Route<dynamic> route) => false,
-                                    )
-                                    // const FlutterSecureStorage().write(key: "value", value: myController.text)
-                                  },
-                              },
+                              onPressed: _registerAndNavigate,
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                   const Color.fromARGB(255, 45, 154, 255),

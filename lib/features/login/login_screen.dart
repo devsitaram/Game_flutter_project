@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:game/features/home/home.dart';
 
 import '../forgotpassword/reste_verifivation_screen.dart';
 import '../register/register_screen.dart';
@@ -12,11 +15,37 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final loginFormKey = GlobalKey<FormState>();
-  final myEmailController = TextEditingController();
-  final myPasswordController = TextEditingController();
+  final loginUsername = TextEditingController();
+  final loginPassword = TextEditingController();
 
   bool passenable = true;
   bool checkValue = false;
+
+  void _loginAndNavigate() async {
+    if (loginFormKey.currentState!.validate()) {
+      const secureStorage = FlutterSecureStorage();
+      // Retrieve data from secure storage
+      String? username = await secureStorage.read(key: "username");
+      String? password = await secureStorage.read(key: "password");
+      if (username != null && password != null) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        toastMessage("Invalid username and password!");
+      }
+    }
+  }
+
+  void toastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,14 +136,14 @@ class _LoginState extends State<Login> {
                                     child: TextFormField(
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'The email is empty!';
+                                          return 'The username is empty!';
                                         }
                                         return null;
                                       },
-                                      controller: myEmailController,
+                                      controller: loginUsername,
                                       decoration: const InputDecoration(
-                                        hintText: 'Email',
-                                        prefixIcon: Icon(Icons.email),
+                                        hintText: 'Username',
+                                        prefixIcon: Icon(Icons.person),
                                       ),
                                     ),
                                   ),
@@ -128,7 +157,7 @@ class _LoginState extends State<Login> {
                                         }
                                         return null;
                                       },
-                                      controller: myPasswordController,
+                                      controller: loginPassword,
                                       obscureText: passenable,
                                       decoration: InputDecoration(
                                         hintText: "Password",
@@ -179,19 +208,7 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 width: width * 1,
                                 child: ElevatedButton(
-                                  onPressed: () => {
-                                    if (loginFormKey.currentState!.validate())
-                                      {
-                                        Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const Register()),
-                                          (Route<dynamic> route) => false,
-                                        )
-                                        // const FlutterSecureStorage().write(key: "value", value: myController.text)
-                                      },
-                                  },
+                                  onPressed: () => {_loginAndNavigate},
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
                                       const Color.fromARGB(255, 45, 154, 255),
