@@ -32,6 +32,11 @@ class _RegisterState extends State<Register> {
           key: "username", value: myUsernameController.text);
       await secureStorage.write(
           key: "password", value: myPasswordController.text);
+
+      print("Email: ${myEmailController.text}");
+      print("Name: ${myUsernameController.text}");
+      print("Password: ${myPasswordController.text}");
+
       // Navigate to the success screen
       Navigator.pushAndRemoveUntil(
         context,
@@ -39,6 +44,13 @@ class _RegisterState extends State<Register> {
         (Route<dynamic> route) => false,
       );
     }
+  }
+
+  void toastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER);
   }
 
   @override

@@ -1,7 +1,9 @@
+// ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:game/features/home/home.dart';
+import 'package:game/features/homepage/home_screen.dart';
 
 import '../forgotpassword/reste_verifivation_screen.dart';
 import '../register/register_screen.dart';
@@ -21,29 +23,33 @@ class _LoginState extends State<Login> {
   bool passenable = true;
   bool checkValue = false;
 
-  void _loginAndNavigate() async {
-    if (loginFormKey.currentState!.validate()) {
-      const secureStorage = FlutterSecureStorage();
-      // Retrieve data from secure storage
-      String? username = await secureStorage.read(key: "username");
-      String? password = await secureStorage.read(key: "password");
-      if (username != null && password != null) {
-        // ignore: use_build_context_synchronously
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (Route<dynamic> route) => false,
-        );
-      } else {
-        toastMessage("Invalid username and password!");
-      }
+  String? name = "";
+  String? password = "";
+
+  @override
+  void initState() {
+    featchLoginValue();
+    super.initState();
+  }
+
+  featchLoginValue() async {
+    const secureStorage = FlutterSecureStorage();
+    // Retrieve data from secure storage
+    String? storedUsername = await secureStorage.read(key: "username");
+    String? storedPassword = await secureStorage.read(key: "password");
+    if (storedUsername != null && storedPassword != null) {
+      name = storedUsername.toString();
+      password = storedPassword.toString();
+    } else {
+      // toastMessage("Account not registered!");
+      print("Account not registered!");
     }
   }
 
   void toastMessage(String message) {
     Fluttertoast.showToast(
         msg: message,
-        toastLength: Toast.LENGTH_LONG,
+        toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER);
   }
 
@@ -208,7 +214,28 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 width: width * 1,
                                 child: ElevatedButton(
-                                  onPressed: () => {_loginAndNavigate},
+                                  onPressed: () => {
+                                    if (loginFormKey.currentState!.validate())
+                                      {
+                                        if (loginUsername.text == name &&
+                                            loginPassword.text == password)
+                                          {
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen()),
+                                              (Route<dynamic> route) => false,
+                                            ),
+                                          }
+                                        else
+                                          {
+                                            print(
+                                                "Invalid username and password!"),
+                                            // toastMessage("Invalid username and password!");
+                                          }
+                                      }
+                                  },
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
                                       const Color.fromARGB(255, 45, 154, 255),

@@ -66,7 +66,7 @@ class _ResetSuccessState extends State<ResetSuccess> {
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Sign In',
+                      'Done',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,

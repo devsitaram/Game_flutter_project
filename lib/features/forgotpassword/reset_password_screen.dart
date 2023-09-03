@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game/features/forgotpassword/reset_success_screen.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -13,6 +14,27 @@ class _ResetPasswordState extends State<ResetPassword> {
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool passenable = true;
+
+  void _resetPassword() async {
+    if (resetPasswordFormKey.currentState!.validate()) {
+      if (newPasswordController.text == confirmPasswordController.text) {
+        print(newPasswordController.text);
+        print(confirmPasswordController.text);
+        // Write data to FlutterSecureStorage
+        const secureStorage = FlutterSecureStorage();
+        await secureStorage.write(
+            key: "password", value: confirmPasswordController.text);
+        // Navigate to the success screen
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ResetSuccess()),
+        );
+      } else {
+        print("confirm password");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +109,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(10),
-                        child: TextField(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Password field is empty!';
+                            }
+                            return null;
+                          },
+                          controller: newPasswordController,
                           obscureText:
                               passenable, //if passenable == true, show **, else show password character
                           decoration: InputDecoration(
@@ -120,7 +149,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10),
-                        child: TextField(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Password field is empty!';
+                            }
+                            return null;
+                          },
+                          controller: confirmPasswordController,
                           obscureText:
                               passenable, //if passenable == true, show **, else show password character
                           decoration: InputDecoration(
@@ -156,11 +192,28 @@ class _ResetPasswordState extends State<ResetPassword> {
                         padding: const EdgeInsets.only(top: 20, bottom: 20),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ResetSuccess()),
-                            );
+                            if (resetPasswordFormKey.currentState!.validate()) {
+                              if (newPasswordController.text ==
+                                  confirmPasswordController.text) {
+                                print(newPasswordController.text);
+                                print(confirmPasswordController.text);
+                                // Write data to FlutterSecureStorage
+                                const secureStorage = FlutterSecureStorage();
+                                secureStorage.write(
+                                    key: "password",
+                                    value: confirmPasswordController.text);
+                                // Navigate to the success screen
+                                // ignore: use_build_context_synchronously
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ResetSuccess()),
+                                );
+                              } else {
+                                print("confirm password");
+                              }
+                            }
                           },
                           child: Container(
                             width: width * 1,

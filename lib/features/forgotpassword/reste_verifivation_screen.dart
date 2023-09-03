@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game/features/forgotpassword/reset_password_screen.dart';
 
 class Verification extends StatefulWidget {
@@ -11,6 +12,27 @@ class Verification extends StatefulWidget {
 class _VerificationState extends State<Verification> {
   final verifyFormKey = GlobalKey<FormState>();
   final myEmailController = TextEditingController();
+
+  String? email;
+
+  @override
+  void initState() {
+    featchEmailValue();
+    super.initState();
+  }
+
+  featchEmailValue() async {
+    const secureStorage = FlutterSecureStorage();
+    // Retrieve data from secure storage
+    String? storedEmail = await secureStorage.read(key: "email");
+    if (storedEmail != null) {
+      email = storedEmail.toString();
+      print(email);
+    } else {
+      // toastMessage("Email not registered!");
+      print("Email not registered!");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +125,16 @@ class _VerificationState extends State<Verification> {
                     child: TextButton(
                       onPressed: () {
                         if (verifyFormKey.currentState!.validate()) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ResetPassword()),
-                          );
+                          if (myEmailController.text == email) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ResetPassword()),
+                            );
+                          } else {
+                            print("Invalid username and password!");
+                            // toastMessage("Invalid username and password!");
+                          }
                         }
                       },
                       child: Container(
