@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:game/features/homepage/home_screen.dart';
+import 'package:game/features/gamepage/game_view.dart';
 
 import '../forgotpassword/reste_verifivation_screen.dart';
+import '../navigationbar/botton_navigations.dart';
 import '../register/register_screen.dart';
 
 class Login extends StatefulWidget {
@@ -224,7 +225,7 @@ class _LoginState extends State<Login> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const HomeScreen()),
+                                                      const BottonNavigationBar()),
                                               (Route<dynamic> route) => false,
                                             ),
                                           }

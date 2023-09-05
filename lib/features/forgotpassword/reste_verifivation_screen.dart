@@ -27,7 +27,6 @@ class _VerificationState extends State<Verification> {
     String? storedEmail = await secureStorage.read(key: "email");
     if (storedEmail != null) {
       email = storedEmail.toString();
-      print(email);
     } else {
       // toastMessage("Email not registered!");
       print("Email not registered!");
